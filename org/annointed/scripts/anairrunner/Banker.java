@@ -20,7 +20,7 @@ public class Banker extends Strategy implements Runnable {
 			} else {
 				if (banker != null) {
 					if (banker.isOnScreen()) {
-						banker.interact("Bank");
+						DynamicInteract.interact(banker, "Bank");
 						Time.sleep(1000, 1500);
 					}
 				}

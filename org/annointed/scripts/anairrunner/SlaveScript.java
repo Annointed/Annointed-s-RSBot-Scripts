@@ -23,7 +23,7 @@ public class SlaveScript extends Strategy implements Runnable {
 		if (Inventory.getItem(Constants.RUNE_ESSENCE_ID) != null) {
 			if (mysteriousRuins != null) {
 				if (mysteriousRuins.isOnScreen()) {
-					mysteriousRuins.interact("Enter");
+					DynamicInteract.interact(mysteriousRuins, "Enter");
 					Time.sleep(1000, 1500);
 				} else {
 					Camera.turnTo(mysteriousRuins);

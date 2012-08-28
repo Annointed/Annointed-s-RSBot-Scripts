@@ -18,7 +18,7 @@ public class MasterScript extends Strategy implements Runnable {
 		}
 		if (airAltar != null) {
 			if (airAltar.isOnScreen()) {
-				airAltar.interact("Craft-rune");
+				DynamicInteract.interact(airAltar, "Craft-Rune");
 				Time.sleep(1000, 1500);
 			} else {
 				Camera.turnTo(airAltar);

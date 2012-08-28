@@ -18,7 +18,7 @@ public class WalkToBank extends Strategy implements Runnable {
 		if (Inventory.getItem(Constants.RUNE_ESSENCE_ID) == null) {
 			if (portal != null) {
 				if (portal.isOnScreen()) {
-					portal.interact("Enter");
+					DynamicInteract.interact(portal, "Enter");
 					Time.sleep(1000, 1500);
 				}
 			} else if (mysteriousRuins != null) {
