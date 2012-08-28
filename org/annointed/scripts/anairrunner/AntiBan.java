@@ -1,6 +1,8 @@
 package org.annointed.scripts.anairrunner;
 
+//Credits to _phl0w
 import org.powerbot.concurrent.strategy.Strategy;
+import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
@@ -18,7 +20,7 @@ public class AntiBan extends Strategy implements Runnable {
 
 	@Override
 	public boolean validate() {
-		return true;
+		return Game.isLoggedIn();
 	}
 
 	public void executeAntiban() {

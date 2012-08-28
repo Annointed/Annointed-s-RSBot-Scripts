@@ -9,6 +9,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -44,6 +48,31 @@ public class AnAirRunner extends ActiveScript implements PaintListener {
 		provide(new Trader());
 		provide(new WalkToBank());
 		provide(new Banker());
+	}
+
+	// Credits to Coma
+	public static int getPrice(int id) {
+		try {
+			String price;
+			URL url = new URL("http://open.tip.it/json/ge_single_item?item="
+					+ id);
+			URLConnection con = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					con.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				if (line.contains("mark_price")) {
+					price = line.substring(line.indexOf("mark_price") + 13,
+							line.indexOf(",\"daily_gp") - 1);
+					price = price.replace(",", "");
+					return Integer.parseInt(price);
+
+				}
+			}
+		} catch (Exception e) {
+			return -1;
+		}
+		return -1;
 	}
 
 	@Override
