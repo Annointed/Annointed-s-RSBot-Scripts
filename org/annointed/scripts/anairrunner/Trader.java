@@ -1,7 +1,6 @@
 package org.annointed.scripts.anairrunner;
 
-import org.annointed.scripts.anairrunner.Trade;
-import org.annointed.scripts.constants.Constants;
+import org.annointed.scripts.anairrunner.constants.Constants;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Time;

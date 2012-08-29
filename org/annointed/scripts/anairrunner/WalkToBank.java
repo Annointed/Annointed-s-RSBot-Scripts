@@ -1,6 +1,6 @@
 package org.annointed.scripts.anairrunner;
 
-import org.annointed.scripts.constants.Constants;
+import org.annointed.scripts.anairrunner.constants.Constants;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.node.SceneEntities;
@@ -18,7 +18,7 @@ public class WalkToBank extends Strategy implements Runnable {
 		if (Inventory.getItem(Constants.RUNE_ESSENCE_ID) == null) {
 			if (portal != null) {
 				if (portal.isOnScreen()) {
-					DynamicInteract.interact(portal, "Enter");
+					portal.interact("Enter");
 					Time.sleep(1000, 1500);
 				}
 			} else if (mysteriousRuins != null) {

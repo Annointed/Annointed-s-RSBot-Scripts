@@ -1,6 +1,6 @@
 package org.annointed.scripts.anairrunner;
 
-import org.annointed.scripts.constants.Constants;
+import org.annointed.scripts.anairrunner.constants.Constants;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
@@ -18,7 +18,7 @@ public class MasterScript extends Strategy implements Runnable {
 		}
 		if (airAltar != null) {
 			if (airAltar.isOnScreen()) {
-				DynamicInteract.interact(airAltar, "Craft-Rune");
+				airAltar.interact("Craft-Rune");
 				Time.sleep(1000, 1500);
 			} else {
 				Camera.turnTo(airAltar);

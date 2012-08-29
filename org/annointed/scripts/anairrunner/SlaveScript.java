@@ -1,6 +1,6 @@
 package org.annointed.scripts.anairrunner;
 
-import org.annointed.scripts.constants.Constants;
+import org.annointed.scripts.anairrunner.constants.Constants;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -23,7 +23,7 @@ public class SlaveScript extends Strategy implements Runnable {
 		if (Inventory.getItem(Constants.RUNE_ESSENCE_ID) != null) {
 			if (mysteriousRuins != null) {
 				if (mysteriousRuins.isOnScreen()) {
-					DynamicInteract.interact(mysteriousRuins, "Enter");
+					mysteriousRuins.interact("Enter");
 					Time.sleep(1000, 1500);
 				} else {
 					Camera.turnTo(mysteriousRuins);
