@@ -57,11 +57,13 @@ public class DynamicInteract {
 	 *            Destination point calculated previously
 	 * @return Returns <tt>true</tt> if the target pounds contains destination
 	 */
-	private static boolean containsPoint(Entity target, Point destination) {
-		Polygon p = target.getBounds()[0];
+	private static boolean containsPoint(final Entity target,
+			final Point destination) {
+		final Polygon p = target.getBounds()[0];
 
 		if (p != null) {
-			Rectangle2D bounds = p.getBounds2D(); // More of a general area
+			final Rectangle2D bounds = p.getBounds2D(); // More of a general
+														// area
 
 			if (bounds != null) {
 				return bounds.contains(destination);
@@ -108,11 +110,11 @@ public class DynamicInteract {
 	 *            The target entity to interact with.
 	 * @return A random point within the target's bounds.
 	 */
-	private static Point getCenterPoint(Entity target) {
-		Polygon p = target.getBounds()[0];
+	private static Point getCenterPoint(final Entity target) {
+		final Polygon p = target.getBounds()[0];
 
 		if (p != null) {
-			Rectangle2D bounds = p.getBounds2D();
+			final Rectangle2D bounds = p.getBounds2D();
 
 			if (bounds != null) {
 				return new Point((int) bounds.getCenterX(),
@@ -126,8 +128,10 @@ public class DynamicInteract {
 	// Copied from the API (Credits: Timer)
 	// A few minor modifications by Bradsta to change destinations as the mouse
 	// is moving.
-	private static boolean interact(Entity target, String action, int x, int y) {
+	private static boolean interact(final Entity target, final String action,
+			final int x, final int y) {
 		final a executor = Context.get().getExecutor();
+
 		MouseNode node = create(x, y);
 		Point destination = new Point(x, y);
 
