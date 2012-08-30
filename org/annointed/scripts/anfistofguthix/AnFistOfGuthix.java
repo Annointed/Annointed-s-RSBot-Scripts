@@ -8,7 +8,8 @@ public class AnFistOfGuthix extends ActiveScript {
 
 	@Override
 	protected void setup() {
-
+		provide(new WaitingLobby());
+		provide(new DetermineRole());
 		provide(new Hunting());
 	}
 
