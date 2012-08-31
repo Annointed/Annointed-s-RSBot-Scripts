@@ -8,6 +8,7 @@ public class DetermineRole extends Strategy implements Runnable {
 
 	@Override
 	public void run() {
+		Constants.inGame = true;
 		if (Widgets.get(730, 26).validate()) {
 			Constants.huntingStyle = true;
 		}
