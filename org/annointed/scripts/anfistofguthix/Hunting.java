@@ -29,6 +29,12 @@ public class Hunting extends Strategy implements Runnable {
 				return false;
 			}
 		});
+		if (!Constants.centerTile.canReach()) {
+			Constants.nextTile = Walking.getClosestOnMap(Constants.centerTile);
+			Walking.findPath(Constants.nextTile).traverse();
+		} else {
+			Walking.findPath(Constants.centerTile).traverse();
+		}
 		if (opponent != null) {
 			if (opponent.isOnScreen()) {
 				System.out.println(opponent.interact("attack") + "--"
@@ -36,7 +42,6 @@ public class Hunting extends Strategy implements Runnable {
 				Time.sleep(1000, 1500);
 			} else {
 				Camera.turnTo(opponent);
-				Walking.findPath(opponent.getLocation()).traverse();
 			}
 		}
 	}
