@@ -1,5 +1,7 @@
 package org.annointed.scripts.anfistofguthix.constants;
 
+import org.powerbot.game.api.wrappers.Tile;
+
 public class Constants {
 
 	public static final int ENTER_PORTAL_ID = 20608;
@@ -18,5 +20,10 @@ public class Constants {
 	public static boolean inWaitingLobby = false;
 	public static boolean huntingStyle = false;
 	public static boolean huntedStyle = false;
+	public static boolean checkedMiddle = false;
+	public static boolean inGame = false;
+
+	public static Tile nextTile;
+	public static Tile centerTile = new Tile(1664, 5696, 0);
 
 }
