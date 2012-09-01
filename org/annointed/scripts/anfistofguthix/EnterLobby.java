@@ -1,6 +1,7 @@
 package org.annointed.scripts.anfistofguthix;
 
 import org.annointed.scripts.anfistofguthix.constants.Constants;
+import org.annointed.scripts.anfistofguthix.wrappers.Methods;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.node.SceneEntities;
@@ -15,7 +16,7 @@ public class EnterLobby extends Strategy implements Runnable {
 		SceneObject passageWay = SceneEntities
 				.getNearest(Constants.ENTER_PASSAGEWAY_ID);
 		if (passageWay.isOnScreen()) {
-			passageWay.interact("Go-through");
+			Methods.interact(passageWay, "Go-through");
 			Time.sleep(3000, 3500);
 		}
 	}

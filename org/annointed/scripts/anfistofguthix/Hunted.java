@@ -1,6 +1,7 @@
 package org.annointed.scripts.anfistofguthix;
 
 import org.annointed.scripts.anfistofguthix.constants.Constants;
+import org.annointed.scripts.anfistofguthix.wrappers.Methods;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
@@ -23,8 +24,7 @@ public class Hunted extends Strategy implements Runnable {
 		if (Inventory.getItem(Constants.STONE_OF_POWER_ID) == null) {
 			if (stoneDispenser != null) {
 				if (stoneDispenser.isOnScreen()) {
-					stoneDispenser.interact("Take");
-					Time.sleep(1000, 1500);
+					Methods.interact(stoneDispenser, "Take");
 				} else {
 					Camera.turnTo(stoneDispenser);
 				}
