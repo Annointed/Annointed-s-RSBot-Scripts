@@ -14,6 +14,7 @@ public class Methods {
 		Point entityPoint = new Point(entity.getCentralPoint().x + random,
 				entity.getCentralPoint().y + random);
 		Mouse.hop(entityPoint.x, entityPoint.y);
+		Mouse.click(false);
 		if (Menu.contains(action))
 			return Menu.select(action);
 		else
