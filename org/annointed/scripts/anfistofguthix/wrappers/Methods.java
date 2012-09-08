@@ -5,6 +5,7 @@ import java.awt.Point;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Entity;
 
 public class Methods {
@@ -15,6 +16,7 @@ public class Methods {
 				entity.getCentralPoint().y + random);
 		Mouse.hop(entityPoint.x, entityPoint.y);
 		Mouse.click(false);
+		Time.sleep(1000, 1500);
 		if (Menu.contains(action))
 			return Menu.select(action);
 		else
