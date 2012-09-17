@@ -19,12 +19,13 @@ import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
-@Manifest(authors = { "Annointed" }, name = "AnDraynorWillowChopper", description = "Cuts willow trees in Draynor", version = 0.1)
+@Manifest(authors = { "Annointed" }, name = "AnDraynorWillowChopper", description = "Cuts willow trees in Draynor", version = 0.2)
 public class AnDraynorWillowChopper extends ActiveScript implements
 		PaintListener {
 
@@ -34,7 +35,7 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 			1359, 1353 };
 
 	public static String Status = "";
-	public static long startTime = System.currentTimeMillis();
+	public Timer runTime = new Timer(0);
 	public static int startWoodcuttingExp;
 	public static int currentWcExp;
 	public static int woodcuttingExpGained;
@@ -183,25 +184,10 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 		final Font font1 = new Font("Verdana", 3, 18);
 		final Font font2 = new Font("Verdana", 1, 12);
 
-		long runTime = 0;
-		long seconds = 0;
-		long minutes = 0;
-		long hours = 0;
-		runTime = System.currentTimeMillis() - startTime;
-		seconds = runTime / 1000;
-		if (seconds >= 60) {
-			minutes = seconds / 60;
-			seconds -= (minutes * 60);
-		}
-
-		if (minutes >= 60) {
-			hours = minutes / 60;
-			minutes -= (hours * 60);
-		}
-
 		if (Game.isLoggedIn()) {
 			currentWcExp = Skills.getExperience(Skills.WOODCUTTING);
 			woodcuttingExpGained = currentWcExp - startWoodcuttingExp;
+			int xpHour = (int) (3600000.0 / (runTime.getElapsed()) * woodcuttingExpGained);
 
 			g.setColor(color1);
 			g.fillRect(8, 394, 487, 114);
@@ -210,14 +196,12 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 			g.drawRect(8, 394, 487, 114);
 			g.setFont(font1);
 			g.setColor(color3);
-			g.drawString("AnDraynorWillowChopper v0.1", 219, 421);
+			g.drawString("AnDraynorWillowChopper v0.2", 219, 421);
 			g.setFont(font2);
 			g.drawString("Status: " + Status, 18, 433);
-			g.drawString(
-					"Run Time: "
-							+ Time.format(System.currentTimeMillis()
-									- startTime), 18, 452);
-			g.drawString("Xp gained: " + woodcuttingExpGained, 19, 472);
+			g.drawString("Run Time: " + runTime.toElapsedString(), 18, 452);
+			g.drawString("Xp gained: " + woodcuttingExpGained + "(" + xpHour
+					+ ")/hr", 19, 472);
 			g.drawString(
 					"WoodCutting Level: " + Skills.getLevel(Skills.WOODCUTTING),
 					18, 491);
