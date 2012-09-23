@@ -5,8 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.powerbot.concurrent.strategy.Strategy;
-import org.powerbot.game.api.ActiveScript;
+import org.powerbot.core.event.listeners.PaintListener;
+import org.powerbot.core.script.ActiveScript;
+import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.job.state.Node;
+import org.powerbot.core.script.job.state.Tree;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
@@ -18,14 +21,12 @@ import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
-import org.powerbot.game.bot.event.listener.PaintListener;
 
-@Manifest(authors = { "Annointed" }, name = "AnDraynorWillowChopper", description = "Cuts willow trees in Draynor", version = 0.2)
+@Manifest(authors = { "Annointed" }, name = "AnDraynorWillowChopper", description = "Cuts willow trees in Draynor", version = 0.3)
 public class AnDraynorWillowChopper extends ActiveScript implements
 		PaintListener {
 
@@ -40,16 +41,30 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 	public static int currentWcExp;
 	public static int woodcuttingExpGained;
 
+	private Tree jobs = null;
+
 	@Override
-	protected void setup() {
+	public void onStart() {
 		if (Game.isLoggedIn()) {
 			startWoodcuttingExp = Skills.getExperience(Skills.WOODCUTTING);
 		}
-		provide(new Chopper());
-		provide(new Dropper());
 	}
 
-	private class Chopper extends Strategy implements Runnable {
+	public int loop() {
+		if (jobs == null) {
+			jobs = new Tree(new Node[] { new Chopper(), new Dropper() });
+		}
+		final Node job = jobs.state();
+		if (job != null) {
+			jobs.set(job);
+			getContainer().submit(job);
+			job.join();
+			return 0;
+		}
+		return Random.nextInt(200, 300);
+	}
+
+	private class Chopper extends Node {
 
 		boolean interact(Entity entity, int lowerBound, int upperBound,
 				String action) {
@@ -79,29 +94,28 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 		}
 
 		@Override
-		public boolean validate() {
+		public boolean activate() {
 			return !Inventory.isFull()
 					&& Players.getLocal().getAnimation() == -1;
 		}
 
 		@Override
-		public void run() {
+		public void execute() {
 			SceneObject willowTree = SceneEntities.getNearest(WILLOW_TREE_IDS);
 			if (willowTree != null) {
 				if (willowTree.isOnScreen()) {
 					interact(willowTree, 1, 7, "Chop");
 					Status = "Chopping";
-					Time.sleep(1000, 1500);
+					Task.sleep(1000, 1500);
 				} else {
 					Camera.turnTo(willowTree);
 					Walking.walk(willowTree);
 				}
 			}
 		}
-
 	}
 
-	private class Dropper extends Strategy implements Runnable {
+	private class Dropper extends Node {
 
 		void dropAllExcept(int lowerBound, int upperBound, int... dontDropThis) {
 			for (Item i : Inventory.getItems()) {
@@ -120,35 +134,22 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 		}
 
 		@Override
-		public boolean validate() {
+		public boolean activate() {
 			return Inventory.isFull();
 		}
 
 		@Override
-		public void run() {
+		public void execute() {
 			dropAllExcept(1, 3, AXE_IDS);
-			Time.sleep(500);
+			Task.sleep(500);
 		}
 
 	}
 
 	// Credits to phl0w
-	public class Antiban extends Strategy implements Runnable {
+	public class Antiban extends Node {
 
-		@Override
-		public boolean validate() {
-			return Game.isLoggedIn();
-		}
-
-		@Override
-		public void run() {
-			if (Random.nextInt(1, 250) < 14) {
-				executeAntiban();
-			}
-			Time.sleep(Random.nextInt(1000, 2000));
-		}
-
-		public void executeAntiban() {
+		void executeAntiban() {
 			int dx, dy;
 			int r = Random.nextInt(0, 4);
 			switch (r) {
@@ -164,11 +165,23 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 				dx = Random.nextInt(-30, 30);
 				dy = Random.nextInt(-30, 30);
 				Mouse.move(Mouse.getX() + dx, Mouse.getY() + dy);
-				Time.sleep(Random.nextInt(20, 150));
+				Task.sleep(20, 150);
 				break;
 			}
 		}
 
+		@Override
+		public boolean activate() {
+			return Game.isLoggedIn();
+		}
+
+		@Override
+		public void execute() {
+			if (Random.nextInt(1, 250) < 14) {
+				executeAntiban();
+			}
+			Task.sleep(1000, 2000);
+		}
 	}
 
 	@Override
@@ -196,7 +209,7 @@ public class AnDraynorWillowChopper extends ActiveScript implements
 			g.drawRect(8, 394, 487, 114);
 			g.setFont(font1);
 			g.setColor(color3);
-			g.drawString("AnDraynorWillowChopper v0.2", 219, 421);
+			g.drawString("AnDraynorWillowChopper v0.3", 219, 421);
 			g.setFont(font2);
 			g.drawString("Status: " + Status, 18, 433);
 			g.drawString("Run Time: " + runTime.toElapsedString(), 18, 452);
